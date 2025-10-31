@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDAi - Health App Prototype</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🏥 MEDAi Health App</h1>
+            <nav id="nav-menu">
+                <a href="#" onclick="showPage('dashboard')" class="nav-btn">Dashboard</a>
+                <a href="#" onclick="showPage('symptoms')" class="nav-btn">Symptoms</a>
+                <a href="#" onclick="showPage('doctors')" class="nav-btn">Doctors</a>
+                <a href="#" onclick="showPage('medicines')" class="nav-btn">Medicines</a>
+                <a href="#" onclick="showPage('appointments')" class="nav-btn">Appointments</a>
+                <button onclick="logout()" class="nav-btn btn-danger">Logout</button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <!-- Login/Register -->
+        <div id="auth-page" class="page">
+            <div class="auth-container">
+                <div class="card">
+                    <h2>Welcome to MEDAi</h2>
+                    <p>Your AI-Powered Health Companion</p>
+
+                    <div id="login-form" class="form-container">
+                        <h3>Login</h3>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="login-email" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="login-password" placeholder="••••••••">
+                        </div>
+                        <button onclick="handleLogin()" class="btn btn-primary">Login</button>
+                        <p class="text-center">Don't have an account? <a href="#" onclick="toggleAuth()">Sign Up</a></p>
+                    </div>
+
+                    <div id="register-form" class="form-container" style="display:none;">
+                        <h3>Sign Up</h3>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="register-name" placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="register-email" placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="register-password" placeholder="••••••••">
+                        </div>
+                        <button onclick="handleRegister()" class="btn btn-primary">Sign Up</button>
+                        <p class="text-center">Already have an account? <a href="#" onclick="toggleAuth()">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard-page" class="page" style="display:none;">
+            <div class="container">
+                <h2>Welcome, <span id="user-name">User</span>! 👋</h2>
+
+                <div class="grid-4">
+                    <div class="card stat-card">
+                        <h3>💊 Consultations</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>📅 Appointments</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>🩺 Reports</h3>
+                        <p class="stat-number">0</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h3>❤️ Health Score</h3>
+                        <p class="stat-number">85%</p>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Quick Actions</h3>
+                        <button onclick="showPage('symptoms')" class="btn btn-primary btn-block">
+                            🔍 Check Symptoms
+                        </button>
+                        <button onclick="showPage('medicines')" class="btn btn-secondary btn-block">
+                            💊 Compare Medicines
+                        </button>
+                        <button onclick="showPage('doctors')" class="btn btn-primary btn-block">
+                            👨‍⚕️ Find Doctors
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-item">
+                            <p>✓ Account created successfully</p>
+                            <small>Just now</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symptom Checker -->
+        <div id="symptoms-page" class="page" style="display:none;">
+            <div class="container">
+                <h2>🔍 AI Symptom Analyzer</h2>
+
+                <div class="card">
+                    <h3>Describe Your Symptoms</h3>
+                    <div class="form-group">
+                        <label>Select or Enter Symptoms (comma-separated)</label>
+                        <textarea id="symptoms-input" placeholder="e.g., fever, cough, headache" rows="4"></textarea>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <select id="duration-select">
+                                <option>1-2 days</option>
+                                <option>3-5 days</option>
+                                <option>1-2 weeks</option>
+                                <option>More than 2 weeks</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Severity</label>
+                            <select id="severity-select">
+                                <option>Mild</option>
+                                <option selected>Moderate</option>
+                                <option>Severe</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="analyzeSymptoms()" class="btn btn-primary btn-lg">Analyze Symptoms</button>
+                </div>
+
+                <div id="analysis-result"></div>
+
+                <div class="quick-symptoms">
+                    <h3>Quick Symptoms</h3>
+                    <button onclick="quickSymptom('fever,cough')" class="symptom-btn">🤒 Cold/Flu</button>
+                    <button onclick="quickSymptom('chest pain')" class="symptom-btn">💔 Chest Pain</button>
+                    <button onclick="quickSymptom('headache')" class="symptom-btn">🤕 Headache</button>
+                    <button onclick="quickSymptom('stomach pain')" class="symptom-btn">🤢 Stomach Pain</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Doctors -->
+        <div id="doctors-page" class="page" style="display:none;">
+            <div class="container">
+                <h2>👨‍⚕️ Find Specialist Doctors</h2>
+
+                <div class="specialists-grid">
+                    <div class="specialist-card" onclick="selectSpecialty('cardiology')">
+                        <div class="specialist-icon">❤️</div>
+                        <h3>Cardiology</h3>
+                        <p>Heart & Cardiovascular</p>
+                    </div>
+                    <div class="specialist-card" onclick="selectSpecialty('neurology')">
+                        <div class="specialist-icon">🧠</div>
+                        <h3>Neurology</h3>
+                        <p>Nervous System</p>
+                    </div>
+                    <div class="specialist-card" onclick="selectSpecialty('pulmonology')">
+                        <div class="specialist-icon">🫁</div>
+                        <h3>Pulmonology</h3>
+                        <p>Respiratory</p>
+                    </div>
+                </div>
+
+                <div id="doctors-list"></div>
+            </div>
+        </div>
+
+        <!-- Medicines -->
+        <div id="medicines-page" class="page" style="display:none;">
+            <div class="container">
+                <h2>💊 Medicine Price Comparison</h2>
+
+                <div class="card">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Medicine Name</label>
+                            <input type="text" id="medicine-name" placeholder="e.g., Paracetamol">
+                        </div>
+                        <div class="form-group">
+                            <label>Strength</label>
+                            <input type="text" id="medicine-strength" placeholder="e.g., 500mg">
+                        </div>
+                        <div class="form-group" style="align-self: flex-end;">
+                            <button onclick="comparePrices()" class="btn btn-primary">Compare Prices</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="price-comparison"></div>
+
+                <div class="popular-medicines">
+                    <h3>Popular Medicines</h3>
+                    <button onclick="quickMedicine('paracetamol', '500mg')" class="medicine-btn">Paracetamol 500mg</button>
+                    <button onclick="quickMedicine('ibuprofen', '400mg')" class="medicine-btn">Ibuprofen 400mg</button>
+                    <button onclick="quickMedicine('amoxicillin', '250mg')" class="medicine-btn">Amoxicillin 250mg</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointments -->
+        <div id="appointments-page" class="page" style="display:none;">
+            <div class="container">
+                <h2>📅 Book Appointment</h2>
+
+                <div class="card">
+                    <div class="grid-3">
+                        <div class="form-group">
+                            <label>Select Doctor</label>
+                            <select id="doctor-select">
+                                <option value="">Choose a doctor...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="appointment-date">
+                        </div>
+                        <div class="form-group">
+                            <label>Time</label>
+                            <input type="time" id="appointment-time">
+                        </div>
+                    </div>
+                    <button onclick="bookAppointment()" class="btn btn-primary">Book Appointment</button>
+                </div>
+
+                <div id="appointments-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MEDAi Health App Prototype | AI-Powered Healthcare Solution</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
